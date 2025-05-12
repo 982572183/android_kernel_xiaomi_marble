@@ -1,0 +1,22 @@
+name: GKI Kernel Module Build
+on: [push]  # 触发条件（如代码推送时自动编译）
+
+jobs:
+  build:
+    name: GKI Kernel Module Build
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        tag: ["android12-5.10"]  # 指定安卓5.10内核
+        arch: ["aarch64"]        # 选择架构（如手机用aarch64）
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run GKI Kernel Build
+        uses: feicong/android-kernel-build-action@main  # 使用官方Action
+        with:
+          arch: ${{ matrix.arch }}
+          tag: ${{ matrix.tag }}
+          module-name: hello-ko      # 替换为你的模块名
+          module-path: hello-ko      # 模块代码路径
